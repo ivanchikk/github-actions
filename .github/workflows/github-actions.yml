@@ -1,0 +1,91 @@
+# Github Actions
+name: Github Actions
+
+env:
+  ENV_VAR1: "environment variable 1 avaible for all jobs"
+  ENV_VAR2: "environment variable 2 avaible for all jobs"
+
+on:
+  push:
+    branches: [ "main", "test-github-actions" ]
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Execute one command
+      run: echo "step 1"
+
+    - name: Execute few commands
+      run: |
+        echo "command 1"
+        echo "command 2"
+        echo "command 3"
+
+  job2:
+    runs-on: ubuntu-latest
+    env:
+      ENV_VAR1: "environment variable 1 avaible for current job only"
+      ENV_VAR2: "environment variable 2 avaible for current job only"
+
+    steps:
+    - name: Show environment variables
+      env:
+        ENV_VAR1: "environment variable 1 avaible for current step only"
+        ENV_VAR2: "environment variable 2 avaible for current step only"
+      run: |
+        echo "all jobs variables: ${{ env.ENV_VAR1 }}, ${{ env.ENV_VAR2 }}"
+        echo "current job variables: ${{ env.ENV_VAR1 }}, ${{ env.ENV_VAR2 }}"
+        echo "current step variables: ${{ env.ENV_VAR1 }}, ${{ env.ENV_VAR2 }}"
+    
+    - name: Show Github variables
+      run: |
+        echo "github.repository: ${{ github.repository }}"
+        echo "github.ref: ${{ github.ref }}"
+        echo "github.sha: ${{ github.sha }}"
+        echo "github.actor: ${{ github.actor }}"
+        echo "github.event_name: ${{ github.event_name }}"
+        echo "github.event_path: ${{ github.event_name }}"
+        echo "github.run_id: ${{ github.run_id }}"
+        echo "github.run_number: ${{ github.run_number }}"
+        echo "github.workflow: ${{ github.workflow }}"
+        echo "github.job: ${{ github.job }}"
+        echo "github.server_url: ${{ github.server_url }}"
+        echo "github.api_url: ${{ github.api_url }}"
+        echo "github.graphql_url: ${{ github.graphql_url }}"
+
+    - name: Show Runner variables
+      run: |
+        echo "runner.os: ${{ runner.os }}"
+        echo "runner.arch: ${{ runner.arch }}"
+        echo "runner.temp: ${{ runner.temp }}"
+        echo "runner.tool_cache: ${{ runner.tool_cache }}"
+
+    - name: Show Job variables
+      run: |
+        echo "job.status: ${{ job.status }}"
+
+  job3:
+    runs-on: ubuntu-latest
+    needs: [job1, job2]
+
+    steps:
+    - name: Check component versions
+      run: |
+        docker --version
+        aws --version
+        zip --version
+
+  job4:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: List current directory
+      run: ls -la
+
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: List current directory
+      run: ls -la
