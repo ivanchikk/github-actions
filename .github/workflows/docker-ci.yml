@@ -2,7 +2,7 @@ name: Docker CI
 
 on:
   push:
-    branches: [ "main", "test-docker-ci" ]
+    branches: [ "main", "test/docker-ci" ]
 
 jobs:
   build:
