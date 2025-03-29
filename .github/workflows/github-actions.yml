@@ -90,15 +90,15 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        var1: [11, 12, 13]
+        var1: [11, 12]
         var2: [1, 2, 3]
         include:
           - var3: 0
           - var1: 11
             var2: 2
             flags: "flag"
-          - var1: 14
-            var2: 4
+          - var1: 21
+            var2: 1
         exclude:
           - var1: 12
             var2: 3
@@ -109,4 +109,4 @@ jobs:
           echo "var1: ${{ matrix.var1 }}"
           echo "var2: ${{ matrix.var2 }}"
           echo "var3: ${{ matrix.var3 }}"
-          echo "flags: ${{ matrix.flags }}"
+          echo "flags: ${{ matrix.flags || 'no flags' }}"
