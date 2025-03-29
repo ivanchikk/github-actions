@@ -30,7 +30,7 @@ jobs:
       JOB_ENV_VAR2: "environment variable 2 avaible for current job only"
 
     steps:
-    - name: Show environment variables
+    - name: Show Environment variables
       env:
         STEP_ENV_VAR1: "environment variable 1 avaible for current step only"
         STEP_ENV_VAR2: "environment variable 2 avaible for current step only"
@@ -84,3 +84,29 @@ jobs:
 
     - name: List current directory
       run: ls -la
+
+  job5:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        var1: [11, 12, 13]
+        var2: [1, 2, 3]
+        include:
+          - var3: 0
+          - var1: 11
+            var2: 2
+            flags: "flag"
+          - var1: 14
+            var2: 4
+        exclude:
+          - var1: 12
+            var2: 3
+
+    steps:
+      - name: Show Matrix values
+        run: |
+          echo "var1: ${{ matrix.var1 }}"
+          echo "var2: ${{ matrix.var2 }}"
+          echo "var3: ${{ matrix.var3 }}"
+          echo "flags: ${{ matrix.flags }}"
