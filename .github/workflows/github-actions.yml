@@ -125,12 +125,12 @@ jobs:
         env:
           abc: "abc"
         run: |
-          echo "startsWith(env.abc, 'a') || endsWith(env.abc, 'c'): "
-          echo -n "${{ startsWith(env.abc, 'a') || endsWith(env.abc, 'c') }}"
-          echo "contains(env.abc, 'bc'): "
-          echo -n "${{ contains(env.abc, 'bc') }}"
+          echo -n "startsWith(env.abc, 'a') || endsWith(env.abc, 'c'): "
+          echo "${{ startsWith(env.abc, 'a') || endsWith(env.abc, 'c') }}"
+          echo -n "contains(env.abc, 'bc'): "
+          echo "${{ contains(env.abc, 'bc') }}"
 
       - name: Github Context
         run: |
-          echo "${{ toJson(github.event_name) }}"
+          echo "Event: ${{ github.event_name }}"
           echo "${{ toJson(github.event) }}"
