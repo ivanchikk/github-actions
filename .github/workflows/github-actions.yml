@@ -8,6 +8,9 @@ env:
 on:
   push:
     branches: [ "main", "test/github-actions" ]
+    paths-ignore:
+      - '.github/workflows/*'
+  workflow_dispatch:
 
 jobs:
   job1:
@@ -110,3 +113,20 @@ jobs:
           echo "var2: ${{ matrix.var2 }}"
           echo "var3: ${{ matrix.var3 }}"
           echo "flags: ${{ matrix.flags || 'no flags' }}"
+
+  job6:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print to Summary
+        run: echo "Job6" >> $GITHUB_STEP_SUMMARY
+
+      - name: Expressions
+        env:
+          abc: "abc"
+        run: |
+          echo "${{ startsWith(env.abc, a) || eendsWith(env.abc, c) }}"
+          echo "${{ contains(env.abc, bc) }}"
+
+      - name: Github Context
+        run: echo "${{ toJson(github.event) }}"
